@@ -1,0 +1,54 @@
+{
+  "name": "message-board-server",
+  "version": "1.0.0",
+  "description": "Message board server.",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "tsc && npm run copystatic",
+    "buildwatch": "tsc --watch",
+    "copystatic": "node ./scripts/copy-static",
+    "dev": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Test,Node\" -c \"blue.bold,yellow.bold,cyan.bold\" \"npm run buildwatch\" \"npm run testwatch\" \"npm run watch-node\"",
+    "test": "tsc && ava",
+    "testwatch": "tsc && ava --watch",
+    "watch-node": "nodemon dist/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CVBDL/message-board-server"
+  },
+  "author": "Patrick Zhong",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.5.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-router": "^7.4.0",
+    "mongoose": "^5.0.9"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.0.44",
+    "@types/koa-bodyparser": "^4.2.0",
+    "@types/koa-router": "^7.0.27",
+    "@types/mongoose": "^5.0.6",
+    "ava": "^1.0.0-beta.3",
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.17.2",
+    "shelljs": "^0.8.1",
+    "typemoq": "^2.1.0",
+    "typescript": "^2.7.2"
+  },
+  "ava": {
+    "files": [
+      "dist/**/*.spec.js"
+    ],
+    "sources": [
+      "dist/**/*.js"
+    ],
+    "concurrency": 5,
+    "failFast": true,
+    "failWithoutAssertions": false,
+    "tap": false,
+    "compileEnhancements": false,
+    "color": true,
+    "verbose": true
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "_name": "Message Board Configuration",
+  "authUrl": "",
+  "dbHost": "127.0.0.1",
+  "dbPort": 27017,
+  "dbNameDev": "MessageBoardDev",
+  "dbNameProd": "MessageBoard"
+}
