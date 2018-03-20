@@ -31,10 +31,10 @@ export class ErrorHandler {
     }
   }
 
-  private static handleOtherError(err: any, ctx: Koa.Context) {
-    const message: string = 'Error occurred';
+  private static handleOtherError(err: Error, ctx: Koa.Context) {
+    const message: string = err.message || 'Error occurred.';
 
-    ctx.status = 400;
+    ctx.status = (err as any).status || 400;
     ctx.body = { message };
   }
 }

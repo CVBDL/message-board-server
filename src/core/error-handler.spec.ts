@@ -29,7 +29,9 @@ test('handle mongoose error', async t => {
 test('handle other error', async t => {
   // Arrange all necessary preconditions and inputs.
   let next: () => Promise<any> = async function next() {
-    throw new Error('Error occurred.');
+    const err: any = new Error('Body should be a JSON object.');
+    err.status = 422;
+    throw err;
   }
   let ctx: any = {
     app: {
@@ -41,6 +43,6 @@ test('handle other error', async t => {
   await ErrorHandler.handle(ctx, next);
 
   // Assert that the expected results have occurred.
-  t.deepEqual(ctx.body, { message: 'Error occurred' });
-  t.deepEqual(ctx.status, 400);
+  t.deepEqual(ctx.body, { message: 'Body should be a JSON object.' });
+  t.deepEqual(ctx.status, 422);
 });

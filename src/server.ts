@@ -1,4 +1,4 @@
-import Koa = require("koa");
+import * as Koa from "koa"
 import bodyParser = require('koa-bodyparser');
 
 import tweet from './api/tweet/api';
@@ -9,7 +9,17 @@ const server = new Koa();
 
 server.use(ErrorHandler.handle);
 
-server.use(bodyParser());
+// https://github.com/koajs/bodyparser#usage
+server.use(bodyParser({
+  enableTypes: ['json', 'form'],
+  encode: 'utf-8',
+  formLimit: '56kb',
+  jsonLimit: '1mb',
+  strict: true,
+  onerror: (err, ctx) => {
+    ctx.throw('Body should be a JSON object.', 400);
+  }
+}));
 
 // debugging
 server.use(async (ctx, next) => {
