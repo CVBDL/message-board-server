@@ -9,7 +9,7 @@ test('handle mongoose error', async t => {
   // Arrange all necessary preconditions and inputs.
   let next: () => Promise<any> = async function next() {
     let err = new MongooseError('MongooseError');
-    err.name = 'ValidationError';
+    err.name = 'DocumentNotFoundError';
     throw err;
   }
   let ctx: any = {
@@ -22,7 +22,7 @@ test('handle mongoose error', async t => {
   await ErrorHandler.handle(ctx, next);
 
   // Assert that the expected results have occurred.
-  t.deepEqual(ctx.body, { message: 'ValidationError: MongooseError' });
+  t.deepEqual(ctx.body, { message: 'Database: Save failed because the document not found. MongooseError' });
   t.deepEqual(ctx.status, 400);
 });
 

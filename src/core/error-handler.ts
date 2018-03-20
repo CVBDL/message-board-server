@@ -2,6 +2,8 @@ import Koa = require("koa");
 
 import { Error as MongooseError } from "mongoose";
 
+import { MongooseErrorHandler } from "./mongoose-error-handler";
+
 
 export class ErrorHandler {
   /**
@@ -15,7 +17,11 @@ export class ErrorHandler {
 
     } catch (err) {
       if (err instanceof MongooseError) {
-        ErrorHandler.handleMongooseError(err, ctx);
+        let result = MongooseErrorHandler.handle(err);
+        ctx.status = result.status;
+        ctx.body = {
+          message: result.message
+        };
 
       } else {
         ErrorHandler.handleOtherError(err, ctx);
@@ -23,12 +29,6 @@ export class ErrorHandler {
 
       ctx.app.emit('error', err, ctx);
     }
-  }
-
-  private static handleMongooseError(err: MongooseError, ctx: Koa.Context) {
-    const message: string = `${err.name}: ${err.message}`;
-    ctx.status = 400;
-    ctx.body = { message: message };
   }
 
   private static handleOtherError(err: any, ctx: Koa.Context) {
