@@ -3,6 +3,9 @@ import { Document } from 'mongoose';
 import Tweet from "./model";
 
 
+/**
+ * Tweet controller.
+ */
 class Controller {
   /**
    * List all tweets.

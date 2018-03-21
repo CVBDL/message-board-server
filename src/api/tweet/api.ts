@@ -29,10 +29,10 @@ router.post('/tweets', async (ctx, next) => {
 /**
  * DELETE /tweets
  */
-router.del('/tweets', async (ctx, next) => {
-  await tweets.removeAll();
-  ctx.body = null;
-});
+// router.del('/tweets', async (ctx, next) => {
+//   await tweets.removeAll();
+//   ctx.body = null;
+// });
 
 /**
  * DELETE /tweets/:id
