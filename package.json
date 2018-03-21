@@ -29,10 +29,12 @@
     "@types/koa-bodyparser": "^4.2.0",
     "@types/koa-router": "^7.0.27",
     "@types/mongoose": "^5.0.6",
+    "@types/supertest": "^2.0.4",
     "ava": "^1.0.0-beta.3",
     "concurrently": "^3.5.1",
     "nodemon": "^1.17.2",
     "shelljs": "^0.8.1",
+    "supertest": "^3.0.0",
     "typemoq": "^2.1.0",
     "typescript": "^2.7.2"
   },
