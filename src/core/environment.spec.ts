@@ -1,7 +1,7 @@
-import test from "ava";
-import * as TypeMoq from "typemoq";
+import test from 'ava';
+import * as TypeMoq from 'typemoq';
 
-import { Environment } from "./environment";
+import { Environment } from './environment';
 
 
 const key: string = 'MESSAGE_BOARD_ENV';

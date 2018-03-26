@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 
-import Tweet from "./model";
+import Tweet from './model';
 
 
 /**

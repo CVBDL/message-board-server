@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import { Configuration } from "./config";
+import { Configuration } from './config';
 
 
 test('should be singleton', t => {

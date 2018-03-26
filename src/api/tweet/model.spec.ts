@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import Tweet from "./model";
+import Tweet from './model';
 
 
 test('should define model named "tweet"', t => {

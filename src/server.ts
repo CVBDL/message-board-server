@@ -1,8 +1,8 @@
-import * as Koa from "koa"
+import * as Koa from 'koa'
 
-import bodyParser from "./middleware/bodyparser";
-import errorHandler from "./middleware/error-handler";
-import requestLogger from "./middleware/request-logger";
+import bodyParser from './middleware/bodyparser';
+import errorHandler from './middleware/error-handler';
+import requestLogger from './middleware/request-logger';
 
 import tweet from './api/tweet/api';
 

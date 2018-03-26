@@ -1,8 +1,8 @@
 import test from 'ava';
 
-import { Error as MongooseError } from "mongoose";
+import { Error as MongooseError } from 'mongoose';
 
-import { MongooseErrorHandler } from "./mongoose-error-handler";
+import { MongooseErrorHandler } from './mongoose-error-handler';
 
 
 test('handle DocumentNotFoundError', async t => {

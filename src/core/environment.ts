@@ -1,4 +1,4 @@
-import { KeyValueReader } from "./key-value-reader";
+import { KeyValueReader } from './key-value-reader';
 
 
 /**
