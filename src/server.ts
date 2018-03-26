@@ -4,7 +4,7 @@ import bodyParser from './middleware/bodyparser';
 import errorHandler from './middleware/error-handler';
 import requestLogger from './middleware/request-logger';
 
-import tweet from './api/tweet/api';
+import tweetRoutes from './api/tweet/api';
 
 
 const server = new Koa();
@@ -18,8 +18,8 @@ server.use(bodyParser);
 // request logger for debugging
 server.use(requestLogger);
 
-// register tweet apis
-server.use(tweet.routes());
+// register tweet rest apis
+server.use(tweetRoutes);
 
 // global error handler
 server.on('error', (err) => {

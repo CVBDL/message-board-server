@@ -1,3 +1,4 @@
+import * as Koa from 'koa';
 import Router = require('koa-router');
 
 import tweets from './controller';
@@ -41,4 +42,6 @@ router.del('/tweets/:id', async (ctx, next) => {
   ctx.body = await tweets.remove(ctx.params.id as string);
 });
 
-export default router;
+const routes: Koa.Middleware = router.routes();
+
+export default routes;

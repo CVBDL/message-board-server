@@ -44,13 +44,6 @@ class Controller {
   public async removeAll(): Promise<any> {
     return await Tweet.remove({});
   }
-
-  /**
-   * Update a tweet.
-   * @param id Tweet id.
-   * @param doc Tweet document.
-   */
-  public async update(id: string, doc: any) {}
 }
 
 export default new Controller();

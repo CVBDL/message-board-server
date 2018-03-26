@@ -5,9 +5,10 @@ import { MongooseErrorHandler } from "../core/mongoose-error-handler";
 
 
 /**
- * @see {@link https://github.com/koajs/examples/blob/master/errors/app.js}
+ * Application error handler middleware.
  * @param ctx 
  * @param next 
+ * @see {@link https://github.com/koajs/examples/blob/master/errors/app.js}
  */
 async function errorHandler(ctx: Koa.Context, next: () => Promise<any>) {
   try {
