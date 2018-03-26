@@ -2,7 +2,7 @@ import test from 'ava';
 
 import { Error as MongooseError } from "mongoose";
 
-import { ErrorHandler } from "./error-handler";
+import errorHandler from "./error-handler";
 
 
 test('handle mongoose error', async t => {
@@ -19,7 +19,7 @@ test('handle mongoose error', async t => {
   };
 
   // Act on the object or method under test.
-  await ErrorHandler.handle(ctx, next);
+  await errorHandler(ctx, next);
 
   // Assert that the expected results have occurred.
   t.deepEqual(ctx.body, { message: 'Database: Save failed because the document not found. MongooseError' });
@@ -40,7 +40,7 @@ test('handle other error', async t => {
   };
 
   // Act on the object or method under test.
-  await ErrorHandler.handle(ctx, next);
+  await errorHandler(ctx, next);
 
   // Assert that the expected results have occurred.
   t.deepEqual(ctx.body, { message: 'Body should be a JSON object.' });

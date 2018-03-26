@@ -1,25 +1,22 @@
 import * as Koa from "koa"
 
-import bodyParser from "./core/bodyparser";
+import bodyParser from "./middleware/bodyparser";
+import errorHandler from "./middleware/error-handler";
+import requestLogger from "./middleware/request-logger";
 
 import tweet from './api/tweet/api';
-import { ErrorHandler } from "./core/error-handler";
 
 
 const server = new Koa();
 
-server.use(ErrorHandler.handle);
+// overall error handler
+server.use(errorHandler);
 
-// parse request body
+// request body parser
 server.use(bodyParser);
 
-// debugging
-server.use(async (ctx, next) => {
-  const start = Date.now();
-  await next();
-  const ms = Date.now() - start;
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
-});
+// request logger for debugging
+server.use(requestLogger);
 
 // register tweet apis
 server.use(tweet.routes());

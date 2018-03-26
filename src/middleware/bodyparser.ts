@@ -1,4 +1,4 @@
-import * as Koa from "koa"
+import * as Koa from 'koa';
 import * as bodyParser from 'koa-bodyparser';
 
 
@@ -14,4 +14,6 @@ const config = {
   }
 };
 
-export default bodyParser(config);
+const middleware: Koa.Middleware = bodyParser(config);
+
+export default middleware;
