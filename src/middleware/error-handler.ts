@@ -1,7 +1,6 @@
 import * as Koa from 'koa';
-import { Error as MongooseError } from "mongoose";
 
-import { MongooseErrorHandler } from "../core/mongoose-error-handler";
+import getErrorHandler from '../core/error-handler-factory';
 
 
 /**
@@ -15,26 +14,31 @@ async function errorHandler(ctx: Koa.Context, next: () => Promise<any>) {
     await next();
 
   } catch (err) {
-    if (err instanceof MongooseError) {
-      let result = MongooseErrorHandler.handle(err);
-      ctx.status = result.status;
-      ctx.body = {
-        message: result.message
-      };
-
-    } else {
-      handleOtherError(err, ctx);
-    }
+    let handler: ErrorHandler = getErrorHandler(err);
+    const result: ClientError = handler(err);
+    ctx.status = result.status;
+    ctx.body = {
+      message: result.message
+    };
 
     ctx.app.emit('error', err, ctx);
   }
 }
 
-function handleOtherError(err: Error, ctx: Koa.Context) {
-  const message: string = err.message || 'Error occurred.';
+/**
+ * Client error send in response.
+ */
+export interface ClientError {
+  status: number;
+  message: string;
+  errors?: any[];
+}
 
-  ctx.status = (err as any).status || 400;
-  ctx.body = { message };
+/**
+ * Error handler function.
+ */
+export interface ErrorHandler {
+  (err: any): ClientError;
 }
 
 const middleware: Koa.Middleware = errorHandler;
