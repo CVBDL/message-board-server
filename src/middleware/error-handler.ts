@@ -4,6 +4,22 @@ import getErrorHandler from '../core/error-handler-factory';
 
 
 /**
+ * Client error send in response.
+ */
+export interface ClientError {
+  status: number;
+  message: string;
+  errors?: any[];
+}
+
+/**
+ * Error handler function.
+ */
+export interface ErrorHandler {
+  (err: any): ClientError;
+}
+
+/**
  * Application error handler middleware.
  * @param ctx 
  * @param next 
@@ -23,22 +39,6 @@ async function errorHandler(ctx: Koa.Context, next: () => Promise<any>) {
 
     ctx.app.emit('error', err, ctx);
   }
-}
-
-/**
- * Client error send in response.
- */
-export interface ClientError {
-  status: number;
-  message: string;
-  errors?: any[];
-}
-
-/**
- * Error handler function.
- */
-export interface ErrorHandler {
-  (err: any): ClientError;
 }
 
 const middleware: Koa.Middleware = errorHandler;
