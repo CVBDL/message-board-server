@@ -1,10 +1,8 @@
 import { Error as MongooseError } from 'mongoose';
 
-import {
-  ClientError,
-  ErrorHandler
-} from '../middleware/error-handler';
+import { ErrorHandler } from '../middleware/error-handler';
 import { MongooseErrorHandler } from './mongoose-error-handler';
+import defaultErrorHandler from "./default-error-handler";
 
 
 function getErrorHandler(err: any): ErrorHandler {
@@ -19,12 +17,5 @@ function getErrorHandler(err: any): ErrorHandler {
 
   return handler;
 };
-
-function defaultErrorHandler(err: Error): ClientError {
-  return {
-    status: (err as any).status || 400,
-    message: err.message || 'Error occurred.'
-  }
-}
 
 export default getErrorHandler;
