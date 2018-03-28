@@ -2,15 +2,15 @@ import test from 'ava';
 import { Error as MongooseError } from 'mongoose';
 
 import { ErrorHandler } from '../middleware/error-handler';
-import { MongooseErrorHandler } from './mongoose-error-handler';
 import defaultErrorHandler from './default-error-handler';
 import getErrorHandler from './error-handler-factory';
+import mongooseErrorHandler from './mongoose-error-handler';
 
 
 test('should return mongoose error handler', t => {
   // Arrange all necessary preconditions and inputs.
   const err: MongooseError = new MongooseError('');
-  const expected: ErrorHandler = MongooseErrorHandler.handle;
+  const expected: ErrorHandler = mongooseErrorHandler;
 
   // Act on the object or method under test.
   const result: ErrorHandler = getErrorHandler(err);

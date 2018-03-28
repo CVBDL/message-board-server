@@ -15,9 +15,7 @@ export interface ClientError {
 /**
  * Error handler function.
  */
-export interface ErrorHandler {
-  (err: any): ClientError;
-}
+export type ErrorHandler = (err: any) => ClientError;
 
 /**
  * Application error handler middleware.

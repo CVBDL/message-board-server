@@ -1,21 +1,21 @@
 import { Error as MongooseError } from 'mongoose';
 
 import { ErrorHandler } from '../middleware/error-handler';
-import { MongooseErrorHandler } from './mongoose-error-handler';
 import defaultErrorHandler from "./default-error-handler";
+import mongooseErrorHandler from './mongoose-error-handler';
 
 
+/**
+ * Look up the proper error handler.
+ * @param err Error object.
+ * @returns Error handler function.
+ */
 function getErrorHandler(err: any): ErrorHandler {
-  let handler: ErrorHandler;
-
   if (err instanceof MongooseError) {
-    handler = MongooseErrorHandler.handle;
-
-  } else {
-    handler = defaultErrorHandler;
+    return mongooseErrorHandler;
   }
 
-  return handler;
+  return defaultErrorHandler;
 };
 
 export default getErrorHandler;

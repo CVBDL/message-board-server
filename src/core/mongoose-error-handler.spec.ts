@@ -2,7 +2,7 @@ import test from 'ava';
 
 import { Error as MongooseError } from 'mongoose';
 
-import { MongooseErrorHandler } from './mongoose-error-handler';
+import mongooseErrorHandler from './mongoose-error-handler';
 
 
 test('handle DocumentNotFoundError', async t => {
@@ -17,7 +17,7 @@ test('handle DocumentNotFoundError', async t => {
     `Database: Save failed because the document not found. ${errMsg}`;
 
   // Act on the object or method under test.
-  let result = MongooseErrorHandler.handle(err);
+  let result = mongooseErrorHandler(err);
 
   // Assert that the expected results have occurred.
   t.deepEqual(expectedStatus, result.status);
@@ -36,7 +36,7 @@ test('handle CastError', async t => {
     `Database: Cast values failed. ${errMsg}`;
 
   // Act on the object or method under test.
-  let result = MongooseErrorHandler.handle(err);
+  let result = mongooseErrorHandler(err);
 
   // Assert that the expected results have occurred.
   t.deepEqual(expectedStatus, result.status);
@@ -55,7 +55,7 @@ test('handle ValidationError', async t => {
     `Database: Validation failed. ${errMsg}`;
 
   // Act on the object or method under test.
-  let result = MongooseErrorHandler.handle(err);
+  let result = mongooseErrorHandler(err);
 
   // Assert that the expected results have occurred.
   t.deepEqual(expectedStatus, result.status);
@@ -74,7 +74,7 @@ test('handle ValidatorError', async t => {
     `Database: Has validator errors. ${errMsg}`;
 
   // Act on the object or method under test.
-  let result = MongooseErrorHandler.handle(err);
+  let result = mongooseErrorHandler(err);
 
   // Assert that the expected results have occurred.
   t.deepEqual(expectedStatus, result.status);
@@ -93,7 +93,7 @@ test('handle VersionError', async t => {
     `Database: Save failed because the document is modified by others. ${errMsg}`;
 
   // Act on the object or method under test.
-  let result = MongooseErrorHandler.handle(err);
+  let result = mongooseErrorHandler(err);
 
   // Assert that the expected results have occurred.
   t.deepEqual(expectedStatus, result.status);
@@ -112,7 +112,7 @@ test('handle DefaultError', async t => {
     `Database: Error occurred when operating database. ${errMsg}`;
 
   // Act on the object or method under test.
-  let result = MongooseErrorHandler.handle(err);
+  let result = mongooseErrorHandler(err);
 
   // Assert that the expected results have occurred.
   t.deepEqual(expectedStatus, result.status);
