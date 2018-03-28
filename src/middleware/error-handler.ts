@@ -23,12 +23,12 @@ export type ErrorHandler = (err: any) => ClientError;
  * @param next 
  * @see {@link https://github.com/koajs/examples/blob/master/errors/app.js}
  */
-async function errorHandler(ctx: Koa.Context, next: () => Promise<any>) {
+async function handler(ctx: Koa.Context, next: () => Promise<any>) {
   try {
     await next();
 
   } catch (err) {
-    let handler: ErrorHandler = getErrorHandler(err);
+    const handler: ErrorHandler = getErrorHandler(err);
     const result: ClientError = handler(err);
     ctx.status = result.status;
     ctx.body = {
@@ -39,6 +39,6 @@ async function errorHandler(ctx: Koa.Context, next: () => Promise<any>) {
   }
 }
 
-const middleware: Koa.Middleware = errorHandler;
+const middleware: Koa.Middleware = handler;
 
 export default middleware;
