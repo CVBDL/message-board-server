@@ -1,5 +1,5 @@
 import * as Koa from 'koa';
-import Router = require('koa-router');
+import * as Router from 'koa-router';
 
 import tweets from './controller';
 
