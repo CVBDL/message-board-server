@@ -1,4 +1,4 @@
-import * as Koa from 'koa'
+import * as Koa from 'koa';
 
 import bodyParser from './middleware/bodyparser';
 import errorHandler from './middleware/error-handler';

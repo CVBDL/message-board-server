@@ -1,6 +1,5 @@
 import test from 'ava';
 
-import { Environment } from './environment';
 import { Db } from './db';
 import { Connection } from 'mongoose';
 

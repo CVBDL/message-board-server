@@ -3,8 +3,8 @@ import {
   createConnection
 } from 'mongoose';
 
-import { Configuration } from './config';
-import { Environment } from './environment';
+import { getConfig } from './config';
+import { getEnvironmentVariable } from './environment';
 
 
 /**
@@ -33,17 +33,14 @@ export class Db {
    * Get MongoDB connection URI used to connect to a MongoDB database server.
    */
   private getConnectionString(): string {
-    const config: Configuration = Configuration.instance;
-    const environment: Environment = Environment.instance;
-
-    const host: string = config.read('dbHost');
-    const port: number = config.read('dbPort');
+    const host: string = getConfig('dbHost');
+    const port: number = getConfig('dbPort');
 
     let database: string;
-    if (environment.read('NODE_ENV') === 'production') {
-      database = config.read('dbNameProd');
+    if (getEnvironmentVariable('NODE_ENV') === 'production') {
+      database = getConfig('dbNameProd');
     } else {
-      database = config.read('dbNameDev');
+      database = getConfig('dbNameDev');
     }
 
     return `mongodb://${host}:${port}/${database}`;

@@ -2,35 +2,54 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { KeyValueReader } from './key-value-reader';
+import {
+  getAbsoluteFilePath,
+  loadFile
+} from './file-loader';
 
 
-/**
- * Singleton class.
- */
-export class Configuration implements KeyValueReader {
-  private static _instance: Configuration | null = null;
+const configFileRelativePath = '../config/config.json';
 
-  private json: { [property: string]: any };
+let config: { [property: string]: any } | null;
 
-  private constructor() { }
+export function getConfig(name: string): any {
+  if (!config) {
+    let rawConfig: string | null = loadConfig(configFileRelativePath);
 
-  public static get instance(): Configuration {
-    if (!Configuration._instance) {
-      Configuration._instance = new Configuration();
+    if (rawConfig !== null) {
+      config = parseConfig(rawConfig);
     }
-    return Configuration._instance;
   }
 
-  public read(key: string): any {
-    if (!this.json) {
-      this.readJson();
-    }
-    return this.json[key];
-  }
+  const configValue: any = getConfigValue(config, name);
 
-  private readJson(): void {
-    const filePath: string = path.join(__dirname, '../config/config.json');
-    const content: string = fs.readFileSync(filePath, { encoding: 'utf8', flag: 'r' });
-    this.json = JSON.parse(content);
+  return configValue;
+}
+
+function loadConfig(relativeFilePath: string): string | null {
+  const configFilePath: string = getAbsoluteFilePath(relativeFilePath);
+  const configFileContent: string | null = loadFile(configFilePath);
+
+  return configFileContent;
+}
+
+function parseConfig(rawConfig: string): { [property: string]: any } | null {
+  let config: { [property: string]: any } | null = null;
+
+  try {
+    config = JSON.parse(rawConfig);
+  } catch(e) { }
+
+  if (config && typeof config === 'object') {
+    return config;
+
+  } else {
+    return null;
+  }
+}
+
+function getConfigValue(config: { [property: string]: any } | null, name: string) {
+  if (config !== null) {
+    return config[name];
   }
 }
