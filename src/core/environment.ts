@@ -1,5 +1,3 @@
-import { KeyValueReader } from './key-value-reader';
-
 /**
  * Read system environment variable value.
  * 

@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { KeyValueReader } from './key-value-reader';
 import {
   getAbsoluteFilePath,
   loadFile

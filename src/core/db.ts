@@ -11,13 +11,21 @@ import { getEnvironmentVariable } from './environment';
  * Returns a Mongodb connection.
  */
 export function getConnection(): Connection {
-  const host: string = getConfig('dbHost');
-  const port: number = getConfig('dbPort');
+  const host: string = getHost();
+  const port: number = getPort();
   const database: string = getDbName();
   const connectionString: string = getConnectionString(host, port, database);
   const connection: Connection = createConnection(connectionString);
 
   return connection;
+}
+
+function getHost(): string {
+  return getConfig('dbHost');
+}
+
+function getPort(): number {
+  return getConfig('dbPort');
 }
 
 function getDbName(): string {
