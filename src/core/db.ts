@@ -5,11 +5,10 @@ import {
 
 import { getConfig } from './config';
 import { getEnvironmentVariable } from './environment';
-import { inspect } from 'util';
 
 
 /**
- * Returns a Mongodb connection.
+ * Returns a Mongoose connection.
  */
 export function getConnection(): Connection {
   const host: string = getHost();

@@ -8,6 +8,11 @@ const configFileRelativePath = '../config/config.json';
 
 let config: { [property: string]: any } | null;
 
+/**
+ * Get a config value by its key name.
+ * 
+ * @param name Config key name.
+ */
 export function getConfig(name: string): any {
   if (!config) {
     let rawConfig: string | null = loadConfig(configFileRelativePath);
