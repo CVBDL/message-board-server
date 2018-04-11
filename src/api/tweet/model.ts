@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import { Db } from '../../core/db';
+import { getConnection } from '../../core/db';
 
 
 const modelName: string = 'tweet';
@@ -52,4 +52,4 @@ function getSchema(modelName: string): Schema {
 /**
  * Define chart model.
  */
-export default Db.instance.getConnection().model(modelName, getSchema(modelName));
+export default getConnection().model(modelName, getSchema(modelName));

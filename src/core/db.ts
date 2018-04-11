@@ -8,41 +8,35 @@ import { getEnvironmentVariable } from './environment';
 
 
 /**
- * Wrapper of database.
+ * Returns a Mongodb connection.
  */
-export class Db {
-  private static _instance: Db | null = null;
+export function getConnection(): Connection {
+  const host: string = getConfig('dbHost');
+  const port: number = getConfig('dbPort');
+  const database: string = getDbName();
+  const connectionString: string = getConnectionString(host, port, database);
+  const connection: Connection = createConnection(connectionString);
 
-  private constructor() { }
+  return connection;
+}
 
-  public static get instance(): Db {
-    if (!Db._instance) {
-      Db._instance = new Db();
-    }
-    return Db._instance;
+function getDbName(): string {
+  const envVarName = 'NODE_ENV';
+  const envVarValueForProd = 'production';
+
+  let database: string;
+  if (getEnvironmentVariable(envVarName) === envVarValueForProd) {
+    database = getConfig('dbNameProd');
+
+  } else {
+    database = getConfig('dbNameDev');
   }
 
-  /**
-   * Creates a Connection instance.
-   */
-  public getConnection(): Connection {
-    return createConnection(this.getConnectionString());
-  }
+  return database;
+}
 
-  /**
-   * Get MongoDB connection URI used to connect to a MongoDB database server.
-   */
-  private getConnectionString(): string {
-    const host: string = getConfig('dbHost');
-    const port: number = getConfig('dbPort');
+function getConnectionString(host: string, port: number, database: string): string {
+  const connectionString: string = `mongodb://${host}:${port}/${database}`;
 
-    let database: string;
-    if (getEnvironmentVariable('NODE_ENV') === 'production') {
-      database = getConfig('dbNameProd');
-    } else {
-      database = getConfig('dbNameDev');
-    }
-
-    return `mongodb://${host}:${port}/${database}`;
-  }
+  return connectionString;
 }
