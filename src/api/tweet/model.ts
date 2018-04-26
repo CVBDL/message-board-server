@@ -12,14 +12,7 @@ function getSchema(modelName: string): Schema {
       default: Date.now
     },
     entities: {
-      media:[{
-        type: {
-          type: String,
-          enum: ['photo'],
-          required: true
-        },
-        mediaUrl: String
-      }]
+      media: [getMediaSchema()]
     },
     text: {
       type: String,
@@ -45,6 +38,30 @@ function getSchema(modelName: string): Schema {
   });
 
   schema.virtual('resourceName').get(() => modelName);
+
+  return schema;
+}
+
+function getMediaSchema(): Schema {
+  const schema = new Schema({
+    type: {
+      type: String,
+      enum: ['photo'],
+      required: true
+    }
+
+  }, {
+    toObject: {
+      virtuals: true
+    },
+    toJSON: {
+      virtuals: true
+    }
+  });
+
+  schema.virtual('mediaUrl').get(function() {
+    return this._id;
+  });
 
   return schema;
 }

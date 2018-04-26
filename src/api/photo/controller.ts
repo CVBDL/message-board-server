@@ -1,7 +1,14 @@
-import { Document } from 'mongoose';
+import { Document, Query } from 'mongoose';
 
 import Photo from './model';
 
+
+/**
+ * List all photos.
+ */
+export async function list(): Promise<Document[]> {
+  return await Photo.find();
+}
 
 /**
  * Create a new photo.
@@ -37,4 +44,11 @@ export async function get(id: string): Promise<Document | null> {
  */
 export async function remove(id: string): Promise<Document | null> {
   return await Photo.findByIdAndRemove(id);
+}
+
+/**
+ * Delete all photos.
+ */
+export async function removeAll(): Promise<Query<any>> {
+  return await Photo.remove({});
 }

@@ -2,6 +2,7 @@ import * as Koa from 'koa';
 import * as Router from 'koa-router';
 
 import tweets from './controller';
+import imageUploadProcessor from '../../middleware/media-image';
 
 
 const router = new Router();
@@ -23,17 +24,17 @@ router.get('/tweets/:id', async (ctx, next) => {
 /**
  * POST /tweets
  */
-router.post('/tweets', async (ctx, next) => {
-  ctx.body = await tweets.create(ctx.request.body);
+router.post('/tweets', imageUploadProcessor, async (ctx, next) => {
+  ctx.body = await tweets.create(ctx);
 });
 
 /**
  * DELETE /tweets
  */
-// router.del('/tweets', async (ctx, next) => {
-//   await tweets.removeAll();
-//   ctx.body = null;
-// });
+router.del('/tweets', async (ctx, next) => {
+  await tweets.removeAll();
+  ctx.body = null;
+});
 
 /**
  * DELETE /tweets/:id
