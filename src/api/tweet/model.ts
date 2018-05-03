@@ -60,7 +60,7 @@ function getMediaSchema(): Schema {
   });
 
   schema.virtual('mediaUrl').get(function() {
-    return this._id;
+    return this._id.toString();
   });
 
   return schema;

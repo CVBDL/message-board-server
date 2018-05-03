@@ -39,10 +39,3 @@ test('should list tweets with 1 item', async t => {
   t.is(1, result.length);
   t.is(tweetFixture.text, result[0].toObject().text);
 });
-
-// test('get tweet: empty', async t => {
-//   const id = new Types.ObjectId;
-//   let result = await TweetController.get(id.toHexString());
-
-//   t.is(null, result);
-// });
