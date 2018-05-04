@@ -10,7 +10,8 @@
     "dev": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Test,Node\" -c \"blue.bold,yellow.bold,cyan.bold\" \"npm run buildwatch\" \"npm run testwatch\" \"npm run watch-node\"",
     "test": "tsc && ava",
     "testwatch": "tsc && ava --watch",
-    "watch-node": "nodemon dist/server.js --delay 1"
+    "watch-node": "nodemon dist/server.js --delay 1",
+    "travisci-test": "npm run copystatic && npm run test"
   },
   "repository": {
     "type": "git",
