@@ -1,7 +1,7 @@
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
 
-import tweets from './controller';
+import * as tweets from './controller';
 import imageUploadProcessor from '../../middleware/media-image';
 
 

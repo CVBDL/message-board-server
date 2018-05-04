@@ -5,6 +5,8 @@ import Photo from './model';
 
 /**
  * List all photos.
+ * 
+ * @returns An array of tweets.
  */
 export async function list(): Promise<Document[]> {
   return await Photo.find();

@@ -7,100 +7,89 @@ import * as photoCtrl from "../photo/controller";
 import { getUploadedImageFiles } from '../../middleware/media-image';
 
 /**
- * @todo remove class
+ * List all tweets.
+ * 
+ * @returns An array of tweets.
  */
+export async function list(): Promise<Document[]> {
+  return await Tweet.find();
+}
 
 /**
- * Tweet controller.
+ * Get a single tweet.
+ * 
+ * @param id Tweet id.
+ * 
+ * @returns The found tweet.
  */
-class Controller {
-  /**
-   * List all tweets.
-   * 
-   * @returns An array of tweets.
-   */
-  public async list(): Promise<Document[]> {
-    return await Tweet.find();
-  }
+export async function get(id: string): Promise<Document | null> {
+  return await Tweet.findById(id);
+}
 
-  /**
-   * Get a single tweet.
-   * 
-   * @param id Tweet id.
-   * 
-   * @returns The found tweet.
-   */
-  public async get(id: string): Promise<Document | null> {
-    return await Tweet.findById(id);
-  }
+/**
+ * Create a new tweet.
+ * 
+ * @param ctx Context.
+ * 
+ * @returns The saved tweet.
+ */
+export async function create(ctx: Router.IRouterContext) {
+  let reqMulter: multer.MulterIncomingMessage =
+    ctx.req as multer.MulterIncomingMessage;
 
-  /**
-   * Create a new tweet.
-   * 
-   * @param ctx Context.
-   * 
-   * @returns The saved tweet.
-   */
-  public async create(ctx: Router.IRouterContext) {
-    let reqMulter: multer.MulterIncomingMessage =
-      ctx.req as multer.MulterIncomingMessage;
+  if (isMultipartFormData(ctx.request.type)) {
+    let images: multer.File[] =
+      getUploadedImageFiles(reqMulter);
+    let media: any[] = [];
 
-    if (this.isMultipartFormData(ctx.request.type)) {
-      let images: multer.File[] =
-        getUploadedImageFiles(reqMulter);
-      let media: any[] = [];
+    for (let i = 0; i < images.length; i++) {
+      const image: multer.File = images[i];
+      const base64content: string = image.buffer.toString('base64');
+      const mimeType: string = image.mimetype;
+      const size: number = image.size;
 
-      for (let i = 0; i < images.length; i++) {
-        const image: multer.File = images[i];
-        const base64content: string = image.buffer.toString('base64');
-        const mimeType: string = image.mimetype;
-        const size: number = image.size;
+      try {
+        let photo: any = await photoCtrl.create({ base64content, mimeType, size });
+        media.push({
+          _id: photo._id,
+          type: 'photo'
+        });
 
-        try {
-          let photo: any = await photoCtrl.create({ base64content, mimeType, size });
-          media.push({
-            _id: photo._id,
-            type: 'photo'
-          });
-
-        } catch(e) { /* error handling */}
-      }
-
-      return await new Tweet({
-        text: reqMulter.body.text,
-        entities: { media }
-      });
-
-    } else {
-      return await new Tweet(ctx.request.body).save();
+      } catch(e) { /* error handling */}
     }
-  }
 
-  /**
-   * Delete a single tweet.
-   * 
-   * @param id Tweet id.
-   * 
-   * @returns The deleted tweet.
-   */
-  public async remove(id: string): Promise<Document | null> {
-    return await Tweet.findByIdAndRemove(id);
-  }
+    return await new Tweet({
+      text: reqMulter.body.text,
+      entities: { media }
+    });
 
-  /**
-   * Delete all tweets.
-   */
-  public async removeAll(): Promise<Query<any>> {
-    return await Tweet.remove({});
-  }
-
-  private isMultipartFormData(type: string): boolean {
-    type = type || '';
-
-    const contentType = 'multipart/form-data';
-
-    return (contentType === type.toLowerCase());
+  } else {
+    return await new Tweet(ctx.request.body).save();
   }
 }
 
-export default new Controller();
+/**
+ * Delete a single tweet.
+ * 
+ * @param id Tweet id.
+ * 
+ * @returns The deleted tweet.
+ */
+export async function remove(id: string): Promise<Document | null> {
+  return await Tweet.findByIdAndRemove(id);
+}
+
+/**
+ * Delete all tweets.
+ */
+export async function removeAll(): Promise<Query<any>> {
+  return await Tweet.remove({});
+}
+
+function isMultipartFormData(type: string): boolean {
+  type = type || '';
+
+  const contentType = 'multipart/form-data';
+
+  return (contentType === type.toLowerCase());
+}

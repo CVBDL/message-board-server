@@ -2,7 +2,7 @@ import test from 'ava';
 import { Types } from 'mongoose';
 
 import Tweet from './model';
-import TweetController from "./controller";
+import * as TweetController from "./controller";
 
 
 const tweetFixture = {
