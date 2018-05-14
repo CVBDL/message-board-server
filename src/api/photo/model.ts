@@ -1,9 +1,20 @@
-import { Schema } from 'mongoose';
+import { Document, Schema } from 'mongoose';
 
+import Photo from "./photo";
 import { getConnection } from '../../core/db';
 
 
 const modelName: string = 'photo';
+
+interface IMimeFileExtensionMap {
+  'image/png': string[],
+  'image/jpeg': string[],
+  [ key: string ]: string[]
+}
+const MimeFileExtensionMap: IMimeFileExtensionMap = {
+  'image/png': ['png'],
+  'image/jpeg': ['jpeg', 'jpg']
+};
 
 function getSchema(modelName: string): Schema {
   const schema = new Schema({
@@ -13,10 +24,7 @@ function getSchema(modelName: string): Schema {
     },
     mimeType: {
       type: String,
-      enum: [
-        'image/png',
-        'image/jpeg'
-      ],
+      enum: Object.keys(MimeFileExtensionMap),
       required: true
     },
     size: {
@@ -45,4 +53,35 @@ function getSchema(modelName: string): Schema {
 /**
  * Define chart model.
  */
-export default getConnection().model(modelName, getSchema(modelName));
+export default getConnection().model<PhotoModel>(modelName, getSchema(modelName));
+
+export interface PhotoModel extends Photo, Document {
+  resourceName: string;
+}
+
+export function doesSupportFormat(format: string | undefined): boolean {
+  if (!format) {
+    return false;
+  }
+
+  for (const mime in MimeFileExtensionMap) {
+    if (MimeFileExtensionMap.hasOwnProperty(mime)) {
+      const fileExtensions: string[] = MimeFileExtensionMap[mime];
+      if (fileExtensions.indexOf(format.toLowerCase()) > -1) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+export function doesPhotoSupportFormat(photo: PhotoModel, format: string | undefined): boolean {
+  if (!format || !doesSupportFormat(format)) {
+    return false;
+  }
+
+  return (
+    MimeFileExtensionMap[photo.mimeType].indexOf(format.toLowerCase()) > -1
+  );
+}

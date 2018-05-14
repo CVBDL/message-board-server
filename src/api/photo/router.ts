@@ -13,6 +13,13 @@ router.get('/photos', async (ctx, next) => {
   ctx.body = await photos.list();
 });
 
+router.get('/photos/:metadata', async (ctx, next) => {
+  // ctx.body = await photos.get(ctx.params.id as string);
+  let photoResponse = await photos.get(ctx.params.metadata as string);
+  ctx.response.body = photoResponse.body;
+  ctx.response.type = photoResponse.type;
+});
+
 /**
  * DELETE /tweets
  */
