@@ -4,5 +4,6 @@
   "dbHost": "127.0.0.1",
   "dbPort": 27017,
   "dbNameDev": "MessageBoardDev",
+  "dbNameTest": "MessageBoardTest",
   "dbNameProd": "MessageBoard"
 }

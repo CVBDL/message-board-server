@@ -1,6 +1,9 @@
 import test from 'ava';
 import { Types } from 'mongoose';
 
+import { enableTestMode } from "../../core/db";
+enableTestMode();
+
 import Tweet from './model';
 import * as TweetController from "./controller";
 

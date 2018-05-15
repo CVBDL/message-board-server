@@ -7,6 +7,15 @@ import { getConfig } from './config';
 import { getEnvironmentVariable } from './environment';
 
 
+let isTestMode: boolean = false;
+
+/**
+ * Connect to testing database.
+ */
+export function enableTestMode(): void {
+  isTestMode = true;
+}
+
 /**
  * Returns a Mongoose connection.
  */
@@ -33,7 +42,10 @@ function getDbName(): string {
   const envVarValueForProd = 'production';
 
   let database: string;
-  if (getEnvironmentVariable(envVarName) === envVarValueForProd) {
+  if (isTestMode) {
+    database = getConfig('dbNameTest');
+
+  } else if (getEnvironmentVariable(envVarName) === envVarValueForProd) {
     database = getConfig('dbNameProd');
 
   } else {
