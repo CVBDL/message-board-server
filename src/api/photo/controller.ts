@@ -41,11 +41,11 @@ export async function create(doc: any): Promise<Document | null> {
  * 
  * @returns The found photo.
  */
-export async function get(metadata: string): Promise<PhotoResponse> {
+export async function get(metadata: string): Promise<PhotoResult> {
   const { id, format } = parse(metadata);
 
   if (!id) {
-    makeError(400, 'Photo id is missing in URL.');
+    throwError(400, 'Photo id is missing in URL.');
   }
 
   if (format) {
@@ -74,6 +74,7 @@ export async function removeAll(): Promise<Query<any>> {
   return await Photo.remove({});
 }
 
+
 function parse(metadata: string) {
   const sep: string = '.';
   const [ id, format ] = metadata.split(sep);
@@ -81,26 +82,26 @@ function parse(metadata: string) {
   return { id, format };
 }
 
-function makeError(status: number, message: string) {
+function throwError(status: number, message: string) {
   throw ({ status, message } as ClientError);
 }
 
-function makeNotFoundError() {
+function throwNotFoundError() {
   const status: number = 404;
   const message: string = 'Photo not found.';
-  makeError(status, message);
+  throwError(status, message);
 }
 
-interface PhotoResponse {
+interface PhotoResult {
   body: PhotoModel | Buffer,
   type: string
 }
 
-async function getPhoto(id: string): Promise<PhotoResponse> {
+async function getPhoto(id: string): Promise<PhotoResult> {
   const photo: PhotoModel | null = await Photo.findById(id);
 
   if (!photo) {
-    makeNotFoundError();
+    throwNotFoundError();
   }
 
   const body = photo as PhotoModel;
@@ -108,20 +109,19 @@ async function getPhoto(id: string): Promise<PhotoResponse> {
   return { body, type };
 }
 
-async function getPhotoWithFormat(id: string, format: string): Promise<PhotoResponse> {
+async function getPhotoWithFormat(id: string, format: string): Promise<PhotoResult> {
   if (!doesSupportFormat(format)) {
-    makeError(400, `File format "${format}" is not supported.`);
+    throwError(400, `File format "${format}" is not supported.`);
   }
 
   const photo: PhotoModel | null = await Photo.findById(id);
 
   if (!photo) {
-    makeNotFoundError();
+    throwNotFoundError();
+  }
 
-  } else {
-    if (!doesPhotoSupportFormat(photo, format)) {
-      makeError(400, `File format "${format}" is not supported for this photo.`);
-    }
+  if (!doesPhotoSupportFormat((photo as PhotoModel), format)) {
+    throwError(400, `File format "${format}" is not supported for this photo.`);
   }
 
   const body = Buffer.from((photo as PhotoModel).base64content, 'base64');
